@@ -6,14 +6,17 @@ const { authMiddleware } = require("./utils/auth");
 const { typeDefs, resolvers } = require("./schemas");
 const db = require("./config/connection");
 
+// port information and server assignments
 const PORT = process.env.PORT || 3001;
 const app = express();
 const server = new ApolloServer({
   typeDefs,
   resolvers,
+  // authorization key
   context: authMiddleware,
 });
 
+// express settings
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
@@ -22,15 +25,17 @@ if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "../client/build")));
 }
 
+// homepage
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "../client/"));
 });
 
-// Create a new instance of an Apollo server with the GraphQL schema
+// Create a new instance of Apollo server with the GraphQL schema
 const startApolloServer = async (typeDefs, resolvers) => {
   await server.start();
   server.applyMiddleware({ app });
 
+  // once connected, listen with express
   db.once("open", () => {
     app.listen(PORT, () => {
       console.log(`API server running on port ${PORT}!`);
