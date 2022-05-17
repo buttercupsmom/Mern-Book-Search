@@ -41,6 +41,7 @@ const SearchBooks = () => {
     }
 
     try {
+      // fetch books to display from google api
       const response = await fetch(
         `https://www.googleapis.com/books/v1/volumes?q=${searchInput}`
       );
@@ -50,7 +51,7 @@ const SearchBooks = () => {
       }
 
       const { items } = await response.json();
-
+      // assign personally created keys to data supplied by google api
       const bookData = items.map((book) => ({
         bookId: book.id,
         authors: book.volumeInfo.authors || ["No author to display"],
@@ -58,7 +59,7 @@ const SearchBooks = () => {
         description: book.volumeInfo.description,
         image: book.volumeInfo.imageLinks?.thumbnail || "",
       }));
-
+      // update state
       setSearchedBooks(bookData);
       setSearchInput("");
     } catch (err) {
@@ -79,15 +80,18 @@ const SearchBooks = () => {
     }
 
     try {
+      // apply saveBook
       const { data } = await saveBook({
         variables: { bookData: { ...bookToSave } },
       });
       console.log(savedBookIds);
+      // update state
       setSavedBookIds([...savedBookIds, bookToSave.bookId]);
     } catch (err) {
       console.error(err);
     }
   };
+  // return contents of SearchBooks tag element
   return (
     <>
       <Jumbotron fluid className="text-light bg-dark">

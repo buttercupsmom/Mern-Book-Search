@@ -1,24 +1,39 @@
-// see SignupForm.js for comments
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Form, Button, Alert } from "react-bootstrap";
 
-import { loginUser } from "../utils/API";
+import { useMutation } from "@apollo/client";
+import { LOGIN_USER } from "../utils/mutations";
+
 import Auth from "../utils/auth";
 
+// defines LoginForm tag element
 const LoginForm = () => {
+  // set states with initial values
   const [userFormData, setUserFormData] = useState({ email: "", password: "" });
   const [validated] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
 
+  const [login, { error }] = useMutation(LOGIN_USER);
+
+  // on state change, check if error occurs and alert as necessary
+  useEffect(() => {
+    if (error) {
+      setShowAlert(true);
+    } else {
+      setShowAlert(false);
+    }
+  }, [error]);
+
+  // as user inputs information into the form, update the state of the associated input target
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setUserFormData({ ...userFormData, [name]: value });
   };
 
+  // checks user input and completes login if validated
   const handleFormSubmit = async (event) => {
     event.preventDefault();
 
-    // check if form has everything (as per react-bootstrap docs)
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
       event.preventDefault();
@@ -26,27 +41,24 @@ const LoginForm = () => {
     }
 
     try {
-      const response = await loginUser(userFormData);
+      const { data } = await login({
+        variables: { ...userFormData },
+      });
 
-      if (!response.ok) {
-        throw new Error("something went wrong!");
-      }
-
-      const { token, user } = await response.json();
-      console.log(user);
-      Auth.login(token);
-    } catch (err) {
-      console.error(err);
-      setShowAlert(true);
+      console.log(data);
+      Auth.login(data.login.token);
+    } catch (e) {
+      console.error(e);
     }
 
+    // clear form values
     setUserFormData({
-      username: "",
       email: "",
       password: "",
     });
   };
 
+  // return contents of LoginForm tag element
   return (
     <>
       <Form noValidate validated={validated} onSubmit={handleFormSubmit}>
