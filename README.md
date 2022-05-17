@@ -1,8 +1,6 @@
 # Mern-Book-Search
 
-# Social Network Startup
-
-![Licesnse: MIT](https://img.shields.io/badge/badge-MIT-pink)
+![Licesnse: MIT](https://img.shields.io/badge/badge-MIT-red)
 
 ## Table of Contents
 
@@ -17,25 +15,30 @@
 
 ## Description
 
+A book search application.
+WHEN the user loads the application they are presented with the options Search for Books and Login/Signup and as well as an input field to search books.
+WHEN user searches for a book
+THEN the search results displayed will include the books title, author, description, image, and a link to that book on the Google Books site.
+
 ## Installation
 
-Open integrated terminal in `server.js` then
+`React` must first be installed
 
 ```
-$npm install
+$npm install to install all dependencies.
 ```
-
-Then packages `express` and `mongoose` will be installed.
 
 ## Usage
 
-Open terminal, then
+Open integrated terminal in `client`
 
 ```
 $nodemon server
 ```
 
 ## Screenshots
+
+![Deployed Search Result](./client/src/images/mernbook.png)
 
 ## License
 
@@ -47,7 +50,8 @@ Rachel Haddad
 
 ## Links
 
-- Here is the repo: [Repo](https://github.com/buttercupsmom/social-network-startup)
+- Here is the repo: [Repo](https://github.com/buttercupsmom/Mern-Book-Search)
+- Here is the deployed page: [Heroku](https://mern-book-search-reh.herokuapp.com/)
 
 ## Questions
 
