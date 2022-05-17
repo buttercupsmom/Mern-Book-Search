@@ -20,6 +20,10 @@ WHEN the user loads the application they are presented with the options Search f
 WHEN user searches for a book
 THEN the search results displayed will include the books title, author, description, image, and a link to that book on the Google Books site.
 
+### Note
+
+We completed this assignment together in class.
+
 ## Installation
 
 `React` must first be installed
